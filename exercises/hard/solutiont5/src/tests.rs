@@ -29,10 +29,15 @@ mod tests {
             let result = retire_time(*time, *tp);
             let duration = start.elapsed();
 
+            // debug: output the input, the result and the expected value
+            println!("Input: {}, {}, Expected: {}, Got: {}", time, tp, expected, result);
+
             // 时间超0.2s，判定不合格
             if duration <= Duration::from_millis(200) && result == *expected {
                 total_score += 10.0;
             }
+            // debug: output the duration and the score
+            println!("Duration: {:?}, Score: {:.2}", duration, total_score);
         }
         println!("Total score: {:.2}", total_score);
         assert_eq!(100.00, total_score);

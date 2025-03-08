@@ -38,10 +38,15 @@ mod tests {
             let result = time_info(*input);
             let duration = start.elapsed();
 
+            // debug: output the result and expected value
+            println!("Input: {}, Output: {}, Expected: {}", input, result, expected);
+
             // 时间超0.2s，判定不合格
             if duration <= Duration::from_millis(200) && result == *expected {
                 total_score += 10.0;
             }
+            // debug: output the time and the score
+            println!("Time: {:?}, Score: {:.2}", duration, total_score);
         }
 
         println!("Total score: {:.2}", total_score);

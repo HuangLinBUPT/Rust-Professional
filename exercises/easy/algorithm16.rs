@@ -11,8 +11,27 @@
 
 use std::fmt::{self, Display, Formatter};
 
+// by github copilot
 pub fn rotate_matrix_90_degrees(matrix: &mut Vec<Vec<i32>>) {
-    // TODO: Implement the logic to rotate the matrix 90 degrees in place
+    if matrix.is_empty() || matrix[0].is_empty() {
+        return;
+    }
+
+    let rows = matrix.len();
+    let cols = matrix[0].len();
+    
+    // Create a new matrix with swapped dimensions
+    let mut rotated = vec![vec![0; rows]; cols];
+    
+    // Fill the rotated matrix
+    for i in 0..rows {
+        for j in 0..cols {
+            rotated[j][rows - 1 - i] = matrix[i][j];
+        }
+    }
+    
+    // Replace the original matrix with the rotated one
+    *matrix = rotated;
 }
 
 #[cfg(test)]

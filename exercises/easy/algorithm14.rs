@@ -10,10 +10,24 @@
 */
 
 use std::fmt::{self, Display, Formatter};
+// by DeepSeek
+pub fn find_duplicates(mut nums: Vec<i32>) -> Vec<i32> {
+    let mut duplicates = Vec::new();
+    let n = nums.len() as i32;
 
-pub fn find_duplicates(nums: Vec<i32>) -> Vec<i32> {
-    // TODO: Implement the logic to find all duplicates in the array
-    Vec::new() // Placeholder return value
+    for i in 0..nums.len() {
+        let num = nums[i].abs();
+        let index = ((num - 1) % n) as usize;
+        if nums[index] < 0 {
+            duplicates.push(num);
+        } else {
+            nums[index] = -nums[index];
+        }
+    }
+
+    duplicates.sort();
+    duplicates.dedup();
+    duplicates
 }
 
 #[cfg(test)]

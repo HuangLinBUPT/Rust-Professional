@@ -69,15 +69,51 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+}
+
+// by Qwen
+// 将 merge 方法的实现放在单独的 impl 块中，并添加 Clone 约束
+impl<T: Ord + Clone> LinkedList<T> {
+    pub fn merge(mut list_a: LinkedList<T>, mut list_b: LinkedList<T>) -> Self {
+        let mut merged_list = LinkedList::new();
+
+        while list_a.length > 0 && list_b.length > 0 {
+            // 安全地获取列表开头的值
+            let val_a = unsafe { list_a.start.unwrap().as_ref() }.val.clone();
+            let val_b = unsafe { list_b.start.unwrap().as_ref() }.val.clone();
+
+            if val_a <= val_b {
+                // 如果A列表的当前值小于等于B列表的当前值，则从A列表中取出该值
+                if let Some(node) = list_a.start.take() {
+                    list_a.start = unsafe { (*node.as_ptr()).next };
+                    list_a.length -= 1;
+                    merged_list.add(val_a);
+                }
+            } else {
+                // 否则，从B列表中取出当前值
+                if let Some(node) = list_b.start.take() {
+                    list_b.start = unsafe { (*node.as_ptr()).next };
+                    list_b.length -= 1;
+                    merged_list.add(val_b);
+                }
+            }
         }
-	}
+
+        // 将剩余的节点直接添加到merged_list中
+        while let Some(node) = list_a.start.take() {
+            list_a.start = unsafe { (*node.as_ptr()).next };
+            list_a.length -= 1;
+            merged_list.add(unsafe { node.as_ref().val.clone() });
+        }
+
+        while let Some(node) = list_b.start.take() {
+            list_b.start = unsafe { (*node.as_ptr()).next };
+            list_b.length -= 1;
+            merged_list.add(unsafe { node.as_ref().val.clone() });
+        }
+
+        merged_list
+    }
 }
 
 impl<T> Display for LinkedList<T>

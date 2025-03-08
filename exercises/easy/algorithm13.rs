@@ -12,10 +12,37 @@
 */
 
 use std::fmt::{self, Display, Formatter};
-
+// by github copilot agent
 pub fn are_anagrams(s1: String, s2: String) -> bool {
-    // TODO: Implement the logic to check if two strings are anagrams
-    false // Placeholder return value
+    // Convert strings to lowercase and filter out non-alphabetic characters
+    let s1_chars: Vec<char> = s1.chars()
+        .filter(|c| c.is_alphabetic())
+        .map(|c| c.to_ascii_lowercase())
+        .collect();
+    
+    let s2_chars: Vec<char> = s2.chars()
+        .filter(|c| c.is_alphabetic())
+        .map(|c| c.to_ascii_lowercase())
+        .collect();
+
+    // If lengths are different after normalization, they can't be anagrams
+    if s1_chars.len() != s2_chars.len() {
+        return false;
+    }
+
+    // Count character frequencies
+    let mut char_count = [0; 26];
+    
+    for c in s1_chars {
+        char_count[(c as u8 - b'a') as usize] += 1;
+    }
+    
+    for c in s2_chars {
+        char_count[(c as u8 - b'a') as usize] -= 1;
+    }
+
+    // Check if all counts are zero
+    char_count.iter().all(|&count| count == 0)
 }
 
 #[cfg(test)]

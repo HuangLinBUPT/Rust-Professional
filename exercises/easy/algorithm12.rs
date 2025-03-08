@@ -10,10 +10,22 @@
 */
 
 use std::fmt::{self, Display, Formatter};
-
+// by github copilot agent
 pub fn is_palindrome(s: String) -> bool {
-    // TODO: Implement the logic to check if the string is a palindrome
-    false // Placeholder return value
+    // Convert to lowercase and filter out non-alphabetic characters
+    let chars: Vec<char> = s.chars()
+        .filter(|c| c.is_alphabetic())
+        .map(|c| c.to_ascii_lowercase())
+        .collect();
+    
+    // Compare characters from start and end
+    let len = chars.len();
+    for i in 0..len/2 {
+        if chars[i] != chars[len - 1 - i] {
+            return false;
+        }
+    }
+    true
 }
 
 #[cfg(test)]

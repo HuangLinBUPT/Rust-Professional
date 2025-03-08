@@ -10,10 +10,40 @@
 */
 
 use std::fmt::{self, Display, Formatter};
-
+// by github copilot
 pub fn fib(n: i32) -> i32 {
-    // TODO: Implement the logic to calculate the nth Fibonacci number using matrix exponentiation
-    0 // Placeholder return value
+    if n <= 1 {
+        return n;
+    }
+    
+    // Define base matrix [[1,1],[1,0]]
+    let mut base = vec![vec![1, 1], vec![1, 0]];
+    let mut result = vec![vec![1, 0], vec![0, 1]]; // Identity matrix
+    let mut power = n - 1;
+    
+    // Binary exponentiation
+    while power > 0 {
+        if power & 1 == 1 {
+            result = multiply_matrices(&result, &base);
+        }
+        base = multiply_matrices(&base, &base);
+        power >>= 1;
+    }
+    
+    result[0][0]
+}
+
+fn multiply_matrices(a: &Vec<Vec<i32>>, b: &Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    vec![
+        vec![
+            a[0][0] * b[0][0] + a[0][1] * b[1][0],
+            a[0][0] * b[0][1] + a[0][1] * b[1][1]
+        ],
+        vec![
+            a[1][0] * b[0][0] + a[1][1] * b[1][0],
+            a[1][0] * b[0][1] + a[1][1] * b[1][1]
+        ]
+    ]
 }
 
 #[cfg(test)]
